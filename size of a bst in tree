@@ -1,0 +1,68 @@
+public class Main
+{
+    public static class Node{
+        int data;
+        Node left;
+        Node right;
+        public Node(int data){
+            this.data=data;
+        }
+    }
+    public static int idx=-1;
+    public static Node crt(int a[]){
+        idx++;
+        if(a[idx]==-1){
+            return null;
+        }
+        Node nn=new Node(a[idx]);
+        nn.left=crt(a);
+        nn.right=crt(a);
+        return nn;
+    }
+    public static void inorder(Node n){
+        if(n==null){
+            return;
+        }
+        inorder(n.left);
+        System.out.print(n.data+" ");
+        inorder(n.right);
+    }
+    static class inf{
+        boolean isbst;
+        int min;
+        int max;
+        int size;
+        inf(boolean isbst,int min,int max,int size){
+            this.isbst=isbst;
+            this.max=max;
+            this.min=min;
+            this.size=size;
+        }
+    }
+    static int bs=0;
+    public static inf lbst(Node n){
+        if(n==null){
+            return new inf(true,Integer.MAX_VALUE,Integer.MIN_VALUE,0);
+        }
+        inf ln=lbst(n.left);
+        inf rn=lbst(n.right);
+        int size=ln.size+rn.size+1;
+        int max=Math.max(Math.max(ln.max,rn.max),n.data);
+        int min=Math.min(Math.min(ln.min,rn.min),n.data);
+        if(n.data<=ln.max||n.data>=rn.min){
+            return new inf(false,min,max,size);
+        }
+        if(ln.isbst&&rn.isbst){
+            bs=Math.max(bs,size);
+            return new inf(true,min,max,size);
+        }
+        return new inf(false,min,max,size);
+    }
+	public static void main(String[] args) {
+		int a[]={50,30,5,-1,-1,20,-1,-1,60,45,-1,-1,70,65,-1,-1,80,-1,-1};
+		Node x=crt(a);
+//		inorder(x);
+        inf y=lbst(x);
+		System.out.println(bs);
+	}
+}
