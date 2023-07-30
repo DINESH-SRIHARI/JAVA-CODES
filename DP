@@ -1,0 +1,504 @@
+package dsa.daa;
+
+import java.util.*;
+import java.util.Arrays;
+public class dp {
+    //fibonacci series
+    public static int fib(int n,int f[]){
+        if(f[n]!=0){
+            return f[n];
+        }
+        if(n==0||n==1){
+            f[n]=n;
+            return n;
+        }
+        f[n]=fib(n-1,f)+fib(n-2,f);
+        return f[n];
+    }
+    public static void main(String args[]){
+        int n=5;
+        int f[]=new int [n+1];
+        System.out.println(fib(n,f));
+    }
+    climbing stairs
+    public static int rec(int n){
+        if(n<0){
+            return 0;
+        }
+        if(n==0){
+            return 1;
+        }
+        return rec(n-1)+rec(n-2);
+    }
+    public static int mem(int n,int a[]){
+        if(n<0){
+            return 0;
+        }
+        if(n==0){
+            return 1;
+        }
+        a[n]= mem(n-1,a)+mem(n-2,a);
+        return a[n];
+    }
+    public static int tab(int n){
+        int a[]=new int[n+1];
+        a[0]=1;
+        for(int i=1;i<=n;i++){
+            if(i-2<0){
+                a[i]=a[i-1];
+            }
+            else {
+                a[i] = a[i - 1] + a[i - 2];
+            }
+        }
+        return a[n];
+    }
+    public static void main(String args[]){
+        int a[]=new int[5];
+        Arrays.fill(a,-1);
+        System.out.println(mem(4,a));
+        //System.out.println(tab(4));
+    }
+    knap sack
+    public static int rec(int w[],int val[],int i,int mw){
+        if(mw==0||i==0){
+            return 0;
+        }
+        if(w[i-1]<=mw){
+            int in=val[i-1]+rec(w,val,i-1,mw-w[i-1]);
+            int ex=rec(w,val,i-1,mw);
+            return Math.max(in,ex);
+        }
+        else{
+            return rec(w,val,i-1,mw);
+        }
+    }
+    public static int mem(int w[],int val[],int i,int mw,int dp[][]){
+        if(mw==0||i==0){
+            return 0;
+        }
+        if(dp[i][mw]!=-1){
+            return dp[i][mw];
+        }
+        if(w[i-1]<=mw){
+            int in=val[i-1]+mem(w,val,i-1,mw-w[i-1],dp);
+            int ex=mem(w,val,i-1,mw,dp);
+            dp[i][mw]= Math.max(in,ex);
+            return dp[i][mw];
+        }
+        else{
+            dp[i][mw]= mem(w,val,i-1,mw,dp);
+            return dp[i][mw];
+        }
+    }
+    public static void pnt(int a[][]){
+        for(int i=0;i<a.length;i++){
+            for(int j=0;j<a[0].length;j++){
+                System.out.print(a[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+    public static int tab(int w[],int val[],int mw){
+        int dp[][]=new int [w.length+1][mw+1];
+        for(int i=0;i<dp.length;i++){
+            dp[0][i]=0;
+            dp[i][0]=0;
+        }
+        for(int i=1;i<dp.length;i++){
+            int weight=w[i-1];
+            int value=val[i-1];
+            for(int j=1;j<dp[0].length;j++){
+                if(weight<=j){
+                    dp[i][j]=Math.max(dp[i-1][j],value+dp[i-1][j-weight]);
+                }
+                else{
+                    dp[i][j]=dp[i-1][j];
+                }
+            }
+        }
+        pnt(dp);
+        return dp[w.length][mw];
+    }
+    public static void main(String args[]){
+        int val[]={15,14,10,45,30};
+        int wt[]={2,5,1,3,4};
+        int dp[][]=new int[val.length+1][7+1];
+        for(int i=0;i<dp.length;i++){
+            for(int j=0;j<dp[0].length;j++){
+                dp[i][j]=-1;
+            }
+        }
+        //Arrays.fill(dp,-1);
+        //System.out.println(rec(wt,val,wt.length,7));
+        System.out.println(mem(wt,val,wt.length,7,dp));
+        //System.out.println(tab(wt,val,7));
+    }
+    target sum
+    public static int tab(int a[],int t){
+        int dp[][]=new int [a.length+1][t+1];
+        for(int i=0;i<dp.length;i++){
+            dp[i][0]=0;
+            dp[0][i]=0;
+        }
+        for(int i=1;i<dp.length;i++){
+
+            for(int j;j<dp[0].length;j++){
+
+            }
+        }
+    }
+    lcs
+//    public static int rec(String s1,int n1,String s2,int n2){
+//        if(n1<0||n2<0){
+//            return 0;
+//        }
+//        if(s1.charAt(n1)==s2.charAt(n2)){
+//            return 1+rec(s1,n1-1,s2,n2-1);
+//        }
+//        else{
+//            int a1=rec(s1,n1-1,s2,n2);
+//            int a2=rec(s1,n1,s2,n2-1);
+//            return Math.max(a1,a2);
+//        }
+//    }
+//    public static int mem(String s1,int n1,String s2,int n2,int dp[][]){
+//        if(n1==0||n2==0){
+//            return 0;
+//        }
+//        if(dp[n1][n2]!=-1){
+//            return dp[n1][n2];
+//        }
+//        if(s1.charAt(n1-1)==s2.charAt(n2-1)){
+//            return dp[n1][n2]= 1+mem(s1,n1-1,s2,n2-1,dp);
+//        }
+//        else{
+//            int a1=mem(s1,n1-1,s2,n2,dp);
+//            int a2=mem(s1,n1,s2,n2-1,dp);
+//            return dp[n1][n2]=Math.max(a1,a2);
+//        }
+//    }
+//    public static int tab(String s1,String s2){
+//        int dp[][]=new int [s1.length()+1][s2.length()+1];
+//        for(int i=1;i<dp.length;i++){
+//            for(int j=1;j<dp[0].length;j++){
+//
+//            }
+//        }
+//    }
+    public static void main(String args[]){
+        String s1="abcd";
+        String s2="bad";
+        int dp[][]=new int[s1.length()+1][s2.length()+1];
+        //Arrays.fill(dp,-1);
+        //System.out.println(rec(s1,s1.length(),s2,s2.length()));
+        for(int i=0;i<dp.length;i++){
+            for(int j=0;j<dp[0].length;j++){
+                dp[i][j]=-1;
+            }
+        }
+       // System.out.println(mem(s1,s1.length(),s2,s2.length(),dp));
+        //System.out.println(tab(s1,s2));
+    }
+    unbounded knapsack
+    public static void pnt(int d[][]){
+        for(int i=0;i<d.length;i++){
+            for(int j=0;j<d[0].length;j++){
+                System.out.print(d[i][j]+" ");
+            }
+            System.out.println();
+        }
+    }
+    public static int tab(int w[],int val[],int mw){
+        int dp[][]=new int [w.length+1][mw+1];
+        for(int i=0;i<dp.length;i++){
+            dp[0][i]=0;
+            dp[i][0]=0;
+        }
+        for(int i=1;i<dp.length;i++){
+            int weight=w[i-1];
+            int value=val[i-1];
+            for(int j=1;j<dp[0].length;j++){
+                if(weight<=j){
+                    dp[i][j]=Math.max(dp[i-1][j],value+dp[i][j-weight]);
+                }
+                else{
+                    dp[i][j]=dp[i-1][j];
+                }
+            }
+        }
+        pnt(dp);
+        return dp[w.length][mw];
+    }
+    public static void main(String args[]){
+        int w[]={2,5,1,3,4};
+        int v[]={15,14,10,45,30};
+        int t=7;
+        System.out.println(tab(w,v,t));
+    }
+    target sum---1
+    public static boolean tab(int n[],int t){
+        boolean dp[][]=new boolean [n.length+1][t+1];
+        for(int i=0;i<dp.length;i++){
+            dp[i][0]=true;
+        }
+        for(int i=1;i<dp.length;i++){
+            for(int j=1;j<dp[0].length;j++){
+                if(n[i-1]<=j&&dp[i-1][j-n[i-1]]==true) {
+                    dp[i][j] = true;
+                }
+                else{
+                    dp[i][j]=dp[i-1][j];
+                }
+            }
+        }
+        return dp[n.length][t];
+    }
+    public static void main(String args[]){
+        int n[]={4,2,7,1,3};
+        int t=10;
+        System.out.println(tab(n,t));
+    }
+     longest continous substirng
+    public static int tab(String s1,String s2){
+        int dp[][]=new int[s1.length()+1][s2.length()+1];
+        int ans=0;
+        for(int i=1;i<s1.length();i++){
+            for(int j=1;j<s2.length();j++){
+                if(s1.charAt(i)==s2.charAt(i)){
+                    dp[i][j]=1+
+                }
+            }
+        }
+    }
+    public static void main(String args[]){
+        String s1="abcde";
+        String s2="abgce";
+
+    }
+    longest common subsequence
+    public static int mem(String s1,int n1,int n2,String s2,int dp[][]){
+       if(n1==0||n2==0){
+           return 0;
+       }
+       if(dp[n1][n2]!=-1){
+           return dp[n1][n2];
+       }
+       if(s1.charAt(n1-1)==s2.charAt(n2-1)){
+           return dp[n1][n2]=1+mem(s1,n1-1,n2-1,s2,dp);
+       }
+       else{
+           return dp[n1][n2]=Math.max(mem(s1,n1-1,n2,s2,dp),mem(s1,n1,n2-1,s2,dp));
+       }
+    }
+    public static int tab(String s1,String s2){
+        int dp[][]=new int[s1.length()+1][s2.length()+1];
+//        for(int i=0;i<dp.length;i++){
+//           dp[i][0]=0;
+//           dp[0][i]=0;
+//        }
+        for(int i=1;i<dp.length;i++){
+            for(int j=1;j<dp[0].length;j++){
+                if(s1.charAt(i-1)==s2.charAt(j-1)){
+                    dp[i][j]=1+dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+        }
+        return dp[s1.length()][s2.length()];
+    }
+    public static void main(String args[]){
+        String s1="abcdge";
+        String s2="abedg";
+        int dp[][]=new int[s1.length()+1][s2.length()+1];
+        for(int i=0;i<dp.length;i++){
+            for(int j=0;j<dp[0].length;j++){
+                dp[i][j]=-1;
+            }
+        }
+        System.out.println(mem(s1,s1.length(),s2.length(),s2,dp));
+        System.out.println(tab(s1,s2));
+    }
+    longest common substirng
+    public static int tab(String s1,String s2){
+        int dp[][]=new int [s1.length()+1][s2.length()+1];
+        int ans=0;
+        for(int i=1;i<dp.length;i++){
+            for(int j=1;j<dp[0].length;j++){
+                if(s1.charAt(i-1)==s2.charAt(j-1)){
+                    dp[i][j]=1+dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j]=0;
+                }
+                ans=Math.max(ans,dp[i][j]);
+            }
+        }
+        return ans;
+    }
+    public static void main(String args[]){
+        String s1="abcde";
+        String s2="abgce";
+        System.out.println(tab(s1,s2));
+    }
+   // longest increasing subsequence
+    public static int tab(int a[],int b[]){
+        int dp[][]=new int[a.length+1][b.length+1];
+        for(int i=1;i<dp.length;i++){
+            for(int j=1;j<dp[0].length;j++){
+                if(a[i-1]==b[j-1]){
+                    dp[i][j]=1+dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j]=Math.max(dp[i-1][j],dp[i][j-1]);
+                }
+            }
+        }
+        return dp[a.length][b.length];
+    }
+    public static void main(String args[]){
+        int a[]={1,2,3,4,5};
+        HashSet<Integer> hs=new HashSet<>();
+        for(int i=0;i<a.length;i++){
+            hs.add(a[i]);
+        }
+        int a1[]=new int[hs.size()];
+        int x=0;
+        for (int i:hs){
+            a1[x++]=i;
+        }
+        System.out.println(tab(a,a1));
+    }
+   // edit distance;
+    public static int tab(String s1,String s2){
+        int dp[][]=new int [s1.length()+1][s2.length()+1];
+        for(int i=0;i<dp.length;i++){
+            dp[i][0]=i;
+        }
+        for(int i=0;i<dp[0].length;i++){
+            dp[0][i]=i;
+        }
+        for (int i=1;i<dp.length;i++){
+            for(int j=1;j<dp[0].length;j++){
+                if(s1.charAt(i-1)==s2.charAt(j-1)){
+                    dp[i][j]=dp[i-1][j-1];
+                }
+                else{
+                    dp[i][j]=Math.min(Math.min(dp[i][j-1]+1,1+dp[i-1][j-1]),1+dp[i-1][j]);
+                }
+            }
+        }
+        return dp[s1.length()][s2.length()];
+    }
+    public static void main(String args[]){
+        String w1="intention";
+        String w2="execution";
+        System.out.println(tab(w1,w2));
+    }
+   // catalans
+    public static int catrec(int n){
+        if(n==1||n==0){
+            return 1;
+        }
+        int cn=0;
+        for(int i=0;i<n;i++){
+            cn+=catrec(i)*catrec(n-i-1);
+        }
+        return cn;
+    }
+    public static int catmem(int n,int dp[]){
+       if(n==0||n==1){
+           return 1;
+       }
+       if(dp[n]!=0){
+           return dp[n];
+       }
+       int cn=0;
+       for(int i=0;i<n;i++){
+           cn=cn+catmem(i,dp)*catmem(n-i-1,dp);
+       }
+       dp[n]=cn;
+       return dp[n];
+    }
+    public static int cattab(int n){
+        int dp[]=new int[n+1];
+        //return dp[n];
+        dp[0]=1;
+        dp[1]=1;
+        for(int i=2;i<=n;i++){
+            int s=0;
+            for(int j=0;j<i;j++){
+                s+=dp[j]*dp[i-j-1];
+            }
+            dp[i]=s;
+        }
+        return dp[n];
+    }
+    public static void main(String args[]){
+        System.out.println(catrec(4));
+        int dp[]=new int[4+1];
+        System.out.println(catmem(4,dp));
+        System.out.println(cattab(4));
+    }
+    //finding the number of binary trees
+    public static int nofbt(int n){
+        int dp[]=new int[n+1];
+        dp[0]=1;
+        dp[1]=1;
+        for(int i=2;i<n+1;i++){
+            int s=0;
+            for(int j=0;j<i;j++){
+                s+=dp[j]*dp[i-j-1];
+            }
+            dp[i]=s;
+        }
+        return dp[n];
+    }
+    public static void main(String args[]){
+        System.out.println(nofbt(2));
+    }
+   // matrix chain multiplication
+    public static int rec(int a[],int start,int end){
+       if(start==end){
+           return 0;
+       }
+       int sum=Integer.MAX_VALUE;
+       for(int k=start;k<end;k++){
+           int c1=rec(a,start,k);
+           int c2=rec(a,k+1,end);
+           int c3=a[start-1]*a[k]*a[end];
+           sum=Math.min(sum,c1+c2+c3);
+       }
+       return sum;
+    }
+    public static int mem(int a[],int s,int e,int dp[][]){
+        if(s==e){
+            return dp[s][e]=0;
+        }
+        if(dp[s][e]!=-1){
+            return dp[s][e];
+        }
+        int sum=Integer.MAX_VALUE;
+        for(int k=s;k<e;k++){
+            sum=Math.min(sum,mem(a,s,k,dp)+mem(a,k+1,e,dp)+a[s-1]*a[k]*a[e]);
+        }
+        dp[s][e]=sum;
+        return dp[s][e];
+    }
+    public static  void main(String args[]){
+        int a[]={1,2,3,4,3};
+        System.out.println(rec(a,1,a.length-1));
+        int dp[][]=new int[a.length][a.length];
+        for(int i=0;i<dp.length;i++){
+            for(int j=0;j<dp[0].length;j++){
+                dp[i][j]=-1;
+            }
+        }
+        for(int i=0;i<dp.length;i++){
+            dp[i][i]=0;
+        }
+        System.out.println(mem(a,1,a.length-1,dp));
+    }
+}
