@@ -1,0 +1,81 @@
+package dsa.daa;
+import java.util.*;
+public class nqueen {
+    //lets see how does a sample n queens actually  work
+    public static void pnt(int a[][]){
+        System.out.println("---------");
+        for(int i=0;i<a.length;i++){
+
+            for(int j=0;j<a[0].length;j++){
+                System.out.print(a[i][j]);
+            }
+            System.out.println();
+        }
+    }
+    public static void built(int a[][],int s){
+        if(s==a.length){
+            pnt(a);
+            return;
+        }
+        for(int i=0;i<a.length;i++){
+            a[s][i]=1;
+            built(a,s+1);
+            a[s][i]=0;
+        }
+    }
+//    public static void main(String args[]){
+//        int a[][]=new int [2][2];
+//        built(a,0);
+//    }
+public static void pnt2(char a[][]){
+    System.out.println("---------");
+    for(int i=0;i<a.length;i++){
+
+        for(int j=0;j<a[0].length;j++){
+            System.out.print(a[i][j]);
+        }
+        System.out.println();
+    }
+}
+public static boolean issafe(char a[][],int row,int col){
+        for(int i=row-1;i>=0;i--){
+            if(a[i][col]=='Q'){
+                return false;
+            }
+        }
+        for(int i=row-1,j=col-1;i>=0&&j>=0;i--,j--){
+            if(a[i][j]=='Q'){
+                return false;
+            }
+        }
+    for(int i=row-1,j=col+1;i>=0&&j<a[0].length;i--,j++){
+        if(a[i][j]=='Q'){
+            return false;
+        }
+    }
+    return true;
+}
+    public static void nq(char a[][],int start){
+        if(start==a.length){
+            pnt2(a);
+            return;
+        }
+        for(int i=0;i<a[0].length;i++){
+            if(issafe(a,start,i)) {
+                a[start][i] = 'Q';
+                nq(a,start+1);
+                a[start][i]='.';
+            }
+
+        }
+    }
+    public static void main(String a[]){
+        char ar[][]=new char[4][4];
+        for(int i=0;i<ar.length;i++){
+            for(int j=0;j<ar[0].length;j++){
+                ar[i][j]='.';
+            }
+        }
+        nq(ar,0);
+    }
+}
