@@ -1,0 +1,31 @@
+public class btrack {
+        static int count =0;
+        public static void pnt(ArrayList<Integer> al){
+                int sum=0,xor=0;
+                for(int i=0;i<al.size();i++){
+                        sum+=al.get(i);
+                        xor=xor^al.get(i);
+                }
+                if(sum==xor){
+                        count++;
+                        System.out.println(al);
+                }
+
+        }
+        public static void subarrays(int a[],int idx,ArrayList<Integer> al){
+                if(idx==a.length){
+                        pnt(al);
+                        return;
+                }
+                al.add(a[idx]);
+                subarrays(a,idx+1,al);
+                al.remove(al.size()-1);
+                subarrays(a,idx+1,al);
+        }
+    public static void main(String arp[]){
+        int a[]={1,2,3,4};
+        ArrayList<Integer> al=new ArrayList<>();
+        subarrays(a,0,al);
+            System.out.println(count);
+    }
+}
