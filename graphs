@@ -1,0 +1,115 @@
+package dsa;
+import java.util.*;
+public class graphs {
+    public static class Edge{
+        int s;
+        int d;
+        int w;
+        Edge(int s,int d,int w){
+            this.s=s;
+            this.d=d;
+            this.w=w;
+        }
+    }
+    public static void createg(ArrayList<Edge>[] g){
+        for(int i=0;i<g.length;i++){
+            g[i]=new ArrayList<>();
+        }
+        g[0].add(new Edge(0,1,1));
+        g[0].add(new Edge(0,2,1));
+
+        g[1].add(new Edge(1,0,1));
+        g[1].add(new Edge(1,3,1));
+
+        g[2].add(new Edge(2,0,1));
+        g[2].add(new Edge(2,4,1));
+
+        g[3].add(new Edge(3,1,1));
+        g[3].add(new Edge(3,5,1));
+       // g[3].add(new Edge(3,4,1));
+
+        g[4].add(new Edge(4,2,1));
+       // g[4].add(new Edge(4,3,1));
+        //g[4].add(new Edge(4,5,1));
+
+        g[5].add(new Edge(5,3,1));
+       // g[5].add(new Edge(5,4,1));
+        g[5].add(new Edge(5,6,1));
+
+        g[6].add(new Edge(6,5,1));
+    }
+    public static void bfs(ArrayList<Edge> g[]){
+        Queue<Integer> qe=new LinkedList<>();
+        boolean vis[]=new boolean[g.length];
+        qe.add(0);
+        while(!qe.isEmpty()){
+            int c= qe.remove();
+            if(!vis[c]){
+                System.out.print(c);
+                vis[c]=true;
+                for(int i=0;i<g[c].size();i++){
+                    Edge e=g[c].get(i);
+                    qe.add(e.d);
+                }
+            }
+        }
+
+    }
+    public static void dfs(ArrayList<Edge> g[],int c,boolean v[]){
+        System.out.println(c);
+        v[c]=true;
+        for(int i=0;i<g[c].size();i++){
+            Edge ed=g[c].get(i);
+            if(!v[ed.d]){
+                dfs(g, ed.d, v);
+            }
+        }
+
+    }
+    public static boolean hspt(ArrayList<Edge> g[],int s,int d,boolean v[]){
+        if(s==d){
+            return true;
+        }
+        v[s]=true;
+        for(int i=0;i<g[s].size();i++){
+            Edge eg=g[s].get(i);
+            if(!v[eg.d]&&hspt(g, eg.d,d,v)){
+                return true;
+            }
+        }
+        return false;
+    }
+    public static boolean isccycle(ArrayList<Edge> g[]){
+       boolean vist[]=new boolean[g.length];
+       for(int i=0;i<g.length;i++){
+           if(!vist[i]){
+               if(iscycutil(g,vist,i,-1)){
+                   return true;
+               }
+           }
+       }
+       return false;
+    }
+    public static boolean iscycutil(ArrayList<Edge> g[],boolean vist[],int c,int p){
+        vist[c]=true;
+        for(int i=0;i<g[c].size();i++){
+            Edge curr=g[c].get(i);
+            if(!vist[curr.d]&&iscycutil(g,vist, curr.d, c)){
+                return true;
+            }
+            if(vist[curr.d]&&curr.d!=p){
+                return true;
+            }
+        }
+        return false;
+    }
+
+    public static void main(String args[]){
+        ArrayList<Edge>[] g=new ArrayList[7];
+        createg(g);
+//       bfs(g);
+//       dfs(g,0,new boolean[7]);
+//       System.out.println(hspt(g,0,5,new boolean[7]));
+        System.out.println(isccycle(g));
+    }
+}
